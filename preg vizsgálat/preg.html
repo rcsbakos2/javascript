@@ -1,0 +1,184 @@
+<html>
+<style>
+    
+    input{
+        margin-top: 0.3%;
+        border:none;
+        border-bottom: 3px solid cadetblue;
+        background: honeydew;
+        margin-left:10px;
+    }
+    #bank{
+        width: 32.5%;
+    }
+    #age{
+        width: 3%;
+    }
+    #time{
+        width:10%;
+    }
+    body{
+        background-color: lightskyblue;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: inherit;
+    }
+    #login{
+        width: 50%;
+        height: 50%;
+        margin: 0 auto;
+        margin-top: 5%;  
+      
+    }
+    h2{
+        
+        text-align: center;
+    }
+    p,label{margin-left:5%;}
+    
+
+
+</style>
+<div id="login">
+    <br>
+    <h2>Retro Reg</h2>
+
+<form name="uberform" method="post" >
+
+
+    <label>Password</label><input type="text" name="jelszo_elso" id="pw_first"/><br>
+    <label>Password one more</label> <input type="text" name="pw_second" id="pw_second"/><br>
+    <label>Email address</label> <input type="text" name="email" id="em_first"/><br>
+    <label>Email address one more</label> <input type="text" name="email" id="em_second"/><br>
+    <label>Your Name</label><input type="text" name="name" id="name"/><br>
+    <label>Age</label><input type="text" name="age" id="age"/><br>
+    <label>TAJ</label> <input type="text" name="tajx" id="taj"/><br>
+    <label>B.l.number</label> <input type="text" name="bank" id="bank"/><br>
+    <label>Personal number</label> <input type="text" name="bank" id="ig"/><br>
+    <label>Freetime</label> <input type="text" name="time" id="time"/><br>
+    <label>To send click here-></label><button onclick="main()">Send</button>
+
+</form>
+
+<label>To validate click here-></label><button onclick="main()">Validate</button>
+<p id="errors"> </p>        
+    <script>
+    var global_string ="";
+    function double_check(first,second,which){
+
+        
+       var first = document.getElementById(first).value;
+       var second = document.getElementById(second).value;
+       
+        var first_char = which.charAt(0);
+        var big = first_char.toUpperCase();
+        var without_first = which.substr(1);
+        var fix = big.concat(without_first);
+
+       if(first=="" || second == "")
+       {
+                 global_string+=fix+"s: The two/one "+which+" fields are empty!<br>"
+       }
+       else{
+                if(first!=second)
+                {
+
+                    global_string+=fix+"s: The two fields are not the same!<br>";
+                }
+        }
+    }
+    function manual_check(id){
+        let mypattern;
+        var otext = "";
+        var f_name = document.getElementById(id).value;
+
+            switch(id){
+            case "em_second":
+            case "em_first":
+            mypattern=/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+            if(id == "em_first")
+            {
+            otext = "First email: Not valid or empty!<br>";
+            }
+            else
+            {
+            otext="Second email: Not valid or empty!<br>";
+            }
+            break;
+
+            case "time":
+            mypattern=/^(\d{2}:\d{2}-)+(\d{2}:\d{2})+$/;
+            otext = "Freetime: e.g.: 01:00-02:00!<br>";
+            break;
+
+            case "ig":
+            mypattern=/^([A-Z])+(\d{6}){1}$/;
+            otext = "Personal number e.g.:IH123456!<br>";
+            break;
+
+            case "bank":
+            mypattern=/^(\d{8}-){2}(\d{8}){1}$/;
+            otext = "B.l.number: e.g.:12345678-12345678-12345678!<br>";
+            break;
+
+            case "taj":
+            mypattern=/^(\d{3}\s){2}(\d{3}){1}$/;
+            otext = "TAJ: e.g.:123 456 789!<br>";
+            break;
+
+            case "name":
+            mypattern=/^[a-zA-Z ]+$/;
+            otext = "Name: e.g.:Firstname Lastname!<br>";
+            break;
+            
+            case "age":
+            mypattern=/^\d{1,2}$/;
+            otext = "Age: from 0 to 99!<br>";
+            break;
+
+            case "pw_first":
+            case "pw_second":
+            mypattern= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{12,}$/;
+            if(id == "pw_first")
+            otext="First password: Minimum one small letter,big letter and one number.<br>";
+            else
+            otext="Second password: Minimum one small letter,big letter and one number.<br>";
+            break;
+        }
+        let result = mypattern.test(f_name);
+        if(!result)
+            {
+                global_string+=otext;
+               
+            }
+    }
+    function length_check(which,size,name)
+    {
+        var x = document.getElementById(which).value;
+        var res = which.substr(0, 2);
+        if(x.length < size)
+        {
+            
+            global_string+=name+": Minimum "+size+" characters!<br>";
+            
+        }
+    }
+    function main(){
+        manual_check("pw_first");
+        length_check("pw_first",12,"First Password");
+        manual_check("pw_second");
+        length_check("pw_second",12,"Second Password");
+        double_check("pw_first","pw_second","password");
+        manual_check("em_first");
+        manual_check("em_second");
+        manual_check("name");
+        manual_check("age");
+        manual_check("taj");
+        manual_check("bank");
+        manual_check("ig");
+        manual_check("time");
+        document.getElementById("errors").innerHTML = global_string;
+        global_string="";
+    }
+    </script>
+    </div>
+</html>
